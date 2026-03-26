@@ -709,7 +709,7 @@ function getStoredUserData() {
 function setStoredUserData(data) { localStorage.setItem(LS_USER_KEY, JSON.stringify(data)); }
 
 // ══ APP STATE ═══════════════════════════════════════════════════════════
-const API = 'http://localhost:8000';
+const API = '';
 let tasks = [];
 let notes = [];
 let user = {};
@@ -1322,7 +1322,7 @@ document.addEventListener('dragend',e=>e.target.classList.remove('dragging'));
 // ══ WEBSOCKET ════════════════════════════════════════════════════════════
 function initWebSocket(){
   try{
-    ws=new WebSocket('ws://localhost:8000/ws');
+    ws=new WebSocket('/ws');
     ws.onmessage=e=>{
       const msg=JSON.parse(e.data);
       if(msg.user_id&&msg.user_id!==CURRENT_USER_ID)return; // ignore other users

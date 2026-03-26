@@ -1,6 +1,7 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional, Dict
 from datetime import datetime
@@ -318,10 +319,15 @@ async def delete_note(note_id: str, user_id: str):
     notes_db.pop(note_id)
     return {"deleted":True}
 
+# ─── Root Route for Frontend ─────────────────────────────────────────
+@app.get("/")
+async def read_root():
+    return FileResponse(os.path.join(os.path.dirname(__file__), "../frontend/index.html"))
+
 # ─── Mount Static Files (after all API routes) ──────────────────────
 frontend_path = os.path.join(os.path.dirname(__file__), "../frontend")
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run(app, host="0.0.0.0", port=10000, reload=False)
